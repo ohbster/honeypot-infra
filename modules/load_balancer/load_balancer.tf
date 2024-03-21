@@ -76,11 +76,11 @@ module "lb_sg" {
 }
 
 #toggle this
-module "public_certificate" {
-  source      = "../acm"
-  domain_name = var.domain_name
+# module "public_certificate" {
+#   source      = "../acm"
+#   domain_name = var.domain_name
 
-}
+# }
 
 resource "aws_lb" "lb" {
   name               = var.name
@@ -120,8 +120,8 @@ resource "aws_lb_listener" "alb_listener" {
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-2016-08"
   #certificate_arn = "arn:aws:acm:us-east-1:378576100664:certificate/70b47e31-1660-4fc1-97b0-67de6bce693e"
-  #certificate_arn = var.certificate_arn
-  certificate_arn = module.public_certificate.certificate_arn
+  certificate_arn = var.certificate_arn
+  # certificate_arn = module.public_certificate.certificate_arn
 
   default_action {
     type             = "forward"

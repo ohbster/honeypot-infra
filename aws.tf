@@ -55,6 +55,7 @@ module "route53" {
   count = var.toggle_map.alb_toggle ? 1 : 0
   source = "./modules/route53"
   public_ip = module.alb[0].dns_name
+  zone_name = var.domain_name
 }
 
 # module "dynamodb" {
