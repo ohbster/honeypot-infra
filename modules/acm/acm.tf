@@ -1,15 +1,12 @@
 resource "aws_acm_certificate" "certificate" {
   domain_name = var.domain_name
-  #private_key = var.private_key
-#   certificate_body = var.certificate_body
-
   validation_method = "DNS"
   lifecycle {
     create_before_destroy = true
   }
 }
 data "aws_route53_zone" "zone" {
-    name = var.domain_name
+    name = var.zone_name
     private_zone = false
     
 }

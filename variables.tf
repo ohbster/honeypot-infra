@@ -122,3 +122,7 @@ variable "domain_name" {
   #default = "www.goldwatch.link"
 }
 
+variable "zone_name" {
+  type = string
+  description = "AWS ACM zone name"
+}

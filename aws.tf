@@ -1,7 +1,7 @@
 #Network
 module "vpc-network" {
   #count = var.vpc_toggle ? 1 : 0
-  count = var.toggle_map.vpc_toggle ? 1 : 0
+  #count = var.toggle_map.vpc_toggle ? 1 : 0
   source               = "./modules/network"
   region               = var.region
   name                 = var.name
@@ -17,16 +17,16 @@ module "ec2_instance_sg" {
   source    = "./modules/security_group"
   name      = var.name
   port_list = var.port_list
-  vpc_id    = module.vpc-network[0].vpc_id
+  vpc_id    = module.vpc-network.vpc_id
   tags      = var.tags
 }
 
 module "alb" {
-  count = var.toggle_map.alb_toggle ? 1 : 0
+  #count = var.toggle_map.alb_toggle ? 1 : 0
   source = "./modules/load_balancer"
   name = "${var.name}-alb"
-  subnets = module.vpc-network[0].public_subnet_ids
-  vpc_id = module.vpc-network[0].vpc_id
+  subnets = module.vpc-network.public_subnet_ids
+  vpc_id = module.vpc-network.vpc_id
   region = var.region
   certificate_arn = module.public_certificate.certificate_arn
   domain_name = var.domain_name
@@ -36,14 +36,14 @@ module "alb" {
 }
 
 module "asg" {
-  count = var.toggle_map.asg_toggle ? 1 : 0
+  #count = var.toggle_map.asg_toggle ? 1 : 0
   source = "./modules/autoscaling_group"
   name = "${var.name}-asg"
-  availability_zones = module.vpc-network[0].availability_zones
-  target_group = [module.alb[0].target_groups]
+  availability_zones = module.vpc-network.availability_zones
+  target_group = [module.alb.target_groups]
   user_data = var.user_data
-  subnet_ids = module.vpc-network[0].private_subnet_ids
-  vpc_id = module.vpc-network[0].vpc_id
+  subnet_ids = module.vpc-network.private_subnet_ids
+  vpc_id = module.vpc-network.vpc_id
   #key_name = module.key_pair.key_name
   pub_key_file = var.pub_key_file
   tags = var.tags
@@ -52,10 +52,10 @@ module "asg" {
 }
 
 module "route53" {
-  count = var.toggle_map.alb_toggle ? 1 : 0
+  #count = var.toggle_map.alb_toggle ? 1 : 0
   source = "./modules/route53"
-  public_ip = module.alb[0].dns_name
-  zone_name = var.domain_name
+  public_ip = module.alb.dns_name
+  zone_name = var.zone_name
 }
 
 # module "dynamodb" {
@@ -72,8 +72,14 @@ module "route53" {
 #   public_key = file(var.pub_key_file)
 # }
 
+module "waf" {
+  source = "./modules/waf"
+  name = var.name
+  target = module.alb.arn
+}
+
 module "public_certificate" {
   source = "./modules/acm"
   domain_name = var.domain_name
-
+  zone_name = var.zone_name
 }
