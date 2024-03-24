@@ -58,20 +58,6 @@ module "route53" {
   zone_name = var.zone_name
 }
 
-# module "dynamodb" {
-#   count = var.toggle_map.dynamodb_toggle ? 1 : 0
-#   source = "./modules/dynamodb"
-#   name = "Testdb"
-#   hash_key = "testhashkey"
-
-# }
-
-# module "key_pair" {
-#   source = "./modules/base_modules/key_pair"
-#   name = var.name
-#   public_key = file(var.pub_key_file)
-# }
-
 module "waf" {
   source = "./modules/waf"
   name = var.name

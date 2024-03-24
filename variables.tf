@@ -84,28 +84,6 @@ variable "key_name"{
   description = "AWS EC2 key name"
 }
 
-# #Lambda
-# variable "lambda_function_name" {
-#   type = string
-#   description = "AWS lambda function name"
-# }
-# variable "source_dir" {
-#   type = string
-#   description = "AWS lambda source directory"
-# }
-
-# #Secrets
-# variable "secret_name" {
-#   type = string
-#   description = "AWS Secret"
-# }
-
-#Api Gateway
-# variable "uri" {
-#   type = string
-#   description = "AWS URI for apigateway"
-# }
-
 variable "toggle_map" {
   type = map(bool)
   description = "AWS Toggle Map"
