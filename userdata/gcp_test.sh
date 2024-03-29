@@ -4,6 +4,26 @@
 WEBPASS='myrandomstring!@!'
 WORKDIR="/root"
 
+apt install -y nginx
+cat <<EOF > /var/www/html/index.html
+<html><body>
+<h1>Hello, Class 5.5</h1>
+<br/>
+Hostname: $(curl "http://metadata.google.internal/computeMetadata/v1/instance/hostname" -H "Metadata-Flavor: Google")
+<br/>
+Instance ID: $(curl "http://metadata.google.internal/computeMetadata/v1/instance/id" -H "Metadata-Flavor: Google")
+<br/>
+Project ID: $(curl "http://metadata.google.internal/computeMetadata/v1/project/project-id" -H "Metadata-Flavor: Google")
+<br/>
+Zone ID: $(curl "http://metadata.google.internal/computeMetadata/v1/instance/zone" -H "Metadata-Flavor: Google")
+<br/>
+Click Here: <a href="https://$(curl "http://metadata/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip" -H "Metadata-Flavor: Google"):64297">Free honey</a>
+<br/>User: webuser
+<br/>Pass: myrandomstring!@!  (<--copy )
+</body></html>
+EOF
+
+
 # Ignore any intereactive dialog when doing upgrade
 # sudo DEBIAN_FRONTEND=noninteractive sh -c 'echo $DEBIAN_FRONTEND'
 sudo apt-get update
@@ -28,3 +48,4 @@ sudo ./install.sh --type=auto --conf="$WORKDIR/tpot.conf" &&
 sudo systemctl start tpot
 sudo rm /$WORKDIR/tpot.conf
 sudo /sbin/reboot
+
