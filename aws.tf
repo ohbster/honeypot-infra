@@ -1,7 +1,5 @@
 #Network
 module "vpc-network" {
-  #count = var.vpc_toggle ? 1 : 0
-  #count = var.toggle_map.vpc_toggle ? 1 : 0
   source               = "./modules/network"
   region               = var.region
   name                 = var.name
@@ -22,7 +20,6 @@ module "ec2_instance_sg" {
 }
 
 module "alb" {
-  #count = var.toggle_map.alb_toggle ? 1 : 0
   source = "./modules/load_balancer"
   name = "${var.name}-alb"
   subnets = module.vpc-network.public_subnet_ids
@@ -36,7 +33,6 @@ module "alb" {
 }
 
 module "asg" {
-  #count = var.toggle_map.asg_toggle ? 1 : 0
   source = "./modules/autoscaling_group"
   name = "${var.name}-asg"
   availability_zones = module.vpc-network.availability_zones
@@ -52,7 +48,6 @@ module "asg" {
 }
 
 module "route53" {
-  #count = var.toggle_map.alb_toggle ? 1 : 0
   source = "./modules/route53"
   public_ip = module.alb.dns_name
   zone_name = var.zone_name
@@ -69,3 +64,7 @@ module "public_certificate" {
   domain_name = var.domain_name
   zone_name = var.zone_name
 }
+
+# module "tpot_instance" {
+
+# }

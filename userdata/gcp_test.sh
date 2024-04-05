@@ -45,6 +45,7 @@ sed "s/myCONF_WEB_PW[^ ]*/myCONF_WEB_PW='$WEBPASS'/g" -i $WORKDIR/tpot.conf && \
 sudo cd $WORKDIR/tpotce
 sudo ./install.sh --type=auto --conf="$WORKDIR/tpot.conf" && \
 sudo systemctl start tpot && \
+sudo systemctl enable tpot && \
 sudo rm $WORKDIR/tpot.conf && \
 sudo /sbin/reboot
 
